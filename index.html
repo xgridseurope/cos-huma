@@ -323,7 +323,7 @@ function render(){
   else if(mode==='zona')cs.textContent=u.dragZone;else if(mode==='tipus')cs.textContent=u.dragType;
   else cs.textContent=curT<.2?u.s0+' · '+u.fact[L.id]:curT<.62?u.s1:u.s2;
   if(!cam.on)document.getElementById('hud').textContent=Math.round(curT*100)+'%';
-  if(cam.on&&cam.lm){const n=performance.now();if(n-lastDet>45){lastDet=n;try{detect()}catch(e){detErr(e)}}}else if(cam.on)document.getElementById('hud').textContent=(cam.status||'…')+' · v4';
+  if(cam.on&&cam.lm){const n=performance.now();if(n-lastDet>45){lastDet=n;try{detect()}catch(e){detErr(e)}}}else if(cam.on)document.getElementById('hud').textContent=(cam.status||'…')+' · v5';
   requestAnimationFrame(render);
 }
 
@@ -425,9 +425,12 @@ const cam={on:false,lm:null},video=document.getElementById('video'),cv=document.
 let ema={open:0,px:null,py:null},pinching=false;
 document.getElementById('camBtn').onclick=async()=>{
   if(cam.on)return;const u=T[lang];msg.textContent='';
-  try{if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)throw 0;
-    await openCam(null);await pickCam();
-  }catch(e){msg.textContent=u.noCam;return}
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){msg.textContent=u.noCam;return}
+  const sel=document.getElementById('camSel');
+  try{await openCam(sel.value||null)}catch(e){
+    msg.textContent='⚠ '+(e&&e.name||'')+': '+(e&&e.message||e)+' — '+CAMHELP[lang];
+    await fillSel(null);return}
+  try{await pickCam()}catch(e){console.warn(e)}
   msg.textContent=u.loading;document.getElementById('vidtxt').style.display='none';cam.on=true;document.body.classList.add('camon');document.body.classList.remove('sheet');applyLang();
   cam.status=u.loading;
   try{const V='https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14';const vision=await import(V+'/vision_bundle.mjs');cam.vision=vision;
@@ -441,17 +444,21 @@ document.getElementById('camBtn').onclick=async()=>{
 };
 const D=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);let lastTs=-1;
 const HINT={ca:'Ensenya tota la mà (amb el canell), a 50 cm',es:'Enseña toda la mano (con la muñeca), a 50 cm',zh:'把整只手（含手腕）放进画面，离镜头约 50 厘米',en:'Show your whole hand (with wrist), ~50 cm away'};
-const VIRT=/OBS|virtual|snap camera|mmhmm|broadcast|droidcam|xsplit|manycam|iriun/i;
+const VIRT=/OBS|virtual|snap camera|mmhmm|xsplit|manycam/i;
 async function openCam(id){if(video.srcObject)video.srcObject.getTracks().forEach(t=>t.stop());
   const c=id?{deviceId:{exact:id},width:640,height:480}:{width:640,height:480,facingMode:'user'};
   const st=await navigator.mediaDevices.getUserMedia({video:c});video.srcObject=st;await video.play();return st}
-async function pickCam(){let ds=[];try{ds=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==='videoinput')}catch(e){}
-  const sel=document.getElementById('camSel');if(ds.length<2){sel.style.display='none';return}
-  const cur=video.srcObject.getVideoTracks()[0],curLabel=cur&&cur.label||'';
-  if(VIRT.test(curLabel)){const real=ds.find(d=>!VIRT.test(d.label));if(real){await openCam(real.deviceId)}}
-  const now=video.srcObject.getVideoTracks()[0].getSettings().deviceId;
+const CAMHELP={ca:'Tanca OBS / Teams / Zoom (poden bloquejar la càmera), tria una altra càmera a la llista i torna-ho a provar.',es:'Cierra OBS / Teams / Zoom (pueden bloquear la cámara), elige otra cámara en la lista y vuelve a probar.',zh:'请关闭 OBS / Teams / Zoom 等占用摄像头的程序，在下拉菜单选另一个摄像头，再点一次按钮。',en:'Close OBS / Teams / Zoom (they can lock the camera), pick another camera in the list and try again.'};
+async function fillSel(now){let ds=[];try{ds=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==='videoinput')}catch(e){}
+  const sel=document.getElementById('camSel');if(!ds.length){sel.style.display='none';return ds}
   sel.innerHTML=ds.map((d,i)=>`<option value="${d.deviceId}" ${d.deviceId===now?'selected':''}>📷 ${d.label||('Camera '+(i+1))}</option>`).join('');
-  sel.style.display='block';sel.onchange=()=>openCam(sel.value).catch(e=>{msg.textContent='⚠ '+e.message})}
+  sel.style.display='block';
+  sel.onchange=()=>{if(!cam.on){document.getElementById('camBtn').click();return}openCam(sel.value).catch(e=>{msg.textContent='⚠ '+e.name+': '+e.message+' — '+CAMHELP[lang]})};
+  return ds}
+async function pickCam(){const ds=await fillSel(null);
+  const cur=video.srcObject.getVideoTracks()[0],curLabel=cur&&cur.label||'',curId=cur&&cur.getSettings().deviceId;
+  if(VIRT.test(curLabel)){const real=ds.find(d=>d.label&&!VIRT.test(d.label));if(real){try{await openCam(real.deviceId)}catch(e){msg.textContent='⚠ '+real.label+': '+e.name;await openCam(curId)}}}
+  await fillSel(video.srcObject.getVideoTracks()[0].getSettings().deviceId)}
 let lastDet=0,errN=0,cal={lo:1.15,hi:1.6};
 async function detErr(e){errN++;const t='⚠ '+(e&&e.message||e);cam.status=t;document.getElementById('hud').textContent=t;
   if(cam.dev==='GPU'&&cam.vision){const old=cam.lm;cam.lm=null;cam.dev='CPU';try{cam.lm=await cam.vision.HandLandmarker.createFromOptions(cam.fs,cam.opt('CPU'));try{old.close()}catch(_){}}catch(e2){cam.status='⚠ '+(e2&&e2.message||e2)}}}
@@ -480,7 +487,7 @@ function detect(){
     if(p&&!pinching){pinching=true;grab(ema.px,ema.py)}else if(p&&pinching)move(ema.px,ema.py);else if(!p&&pinching){pinching=false;release()}
     cursor.setAttribute('fill',pinching?'rgba(192,86,59,.35)':'none');hud.push(u.R+' '+(pinching?u.pinch:u.point));
   }else{cursor.setAttribute('opacity',0);if(pinching){pinching=false;release()}ema.px=null;if(!L.custom)hud.push(u.R+' '+u.none)}
-  document.getElementById('hud').textContent=(hands.length?'✋'+hands.length+' · '+hud.join(' · '):'🔍 '+HINT[lang])+' · '+cam.dev+' · v4';
+  document.getElementById('hud').textContent=(hands.length?'✋'+hands.length+' · '+hud.join(' · '):'🔍 '+HINT[lang])+' · '+cam.dev+' · v5';
 }
 
 if(MOB)document.querySelector('main').appendChild(document.querySelector('.vid'));
