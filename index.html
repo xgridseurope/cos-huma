@@ -79,6 +79,7 @@ svg#stage{flex:1;width:100%;min-height:0;display:block;touch-action:none;user-se
   <div class="brand"><b>El cos humà · Bloom</b><div id="brandSub"></div></div>
   <div class="vid"><span id="vidtxt">📷</span><canvas id="cv" width="640" height="480"></canvas></div>
   <button class="pri" id="camBtn"></button>
+  <select id="camSel" style="display:none;width:100%;padding:8px;border-radius:8px;background:#2a2725;color:#eee;border:1px solid #444;font:inherit"></select>
   <div class="msg" id="msg"></div>
   <div class="gest" id="gest"></div>
   <div><label class="sl" id="slLbl"></label><input type="range" id="sl" min="0" max="1" step="0.01" value="0"></div>
@@ -322,7 +323,7 @@ function render(){
   else if(mode==='zona')cs.textContent=u.dragZone;else if(mode==='tipus')cs.textContent=u.dragType;
   else cs.textContent=curT<.2?u.s0+' · '+u.fact[L.id]:curT<.62?u.s1:u.s2;
   if(!cam.on)document.getElementById('hud').textContent=Math.round(curT*100)+'%';
-  if(cam.on&&cam.lm){const n=performance.now();if(n-lastDet>45){lastDet=n;try{detect()}catch(e){detErr(e)}}}else if(cam.on)document.getElementById('hud').textContent=(cam.status||'…')+' · v3';
+  if(cam.on&&cam.lm){const n=performance.now();if(n-lastDet>45){lastDet=n;try{detect()}catch(e){detErr(e)}}}else if(cam.on)document.getElementById('hud').textContent=(cam.status||'…')+' · v4';
   requestAnimationFrame(render);
 }
 
@@ -425,7 +426,7 @@ let ema={open:0,px:null,py:null},pinching=false;
 document.getElementById('camBtn').onclick=async()=>{
   if(cam.on)return;const u=T[lang];msg.textContent='';
   try{if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)throw 0;
-    const st=await navigator.mediaDevices.getUserMedia({video:{width:640,height:480,facingMode:'user'}});video.srcObject=st;await video.play();
+    await openCam(null);await pickCam();
   }catch(e){msg.textContent=u.noCam;return}
   msg.textContent=u.loading;document.getElementById('vidtxt').style.display='none';cam.on=true;document.body.classList.add('camon');document.body.classList.remove('sheet');applyLang();
   cam.status=u.loading;
@@ -440,6 +441,17 @@ document.getElementById('camBtn').onclick=async()=>{
 };
 const D=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);let lastTs=-1;
 const HINT={ca:'Ensenya tota la mà (amb el canell), a 50 cm',es:'Enseña toda la mano (con la muñeca), a 50 cm',zh:'把整只手（含手腕）放进画面，离镜头约 50 厘米',en:'Show your whole hand (with wrist), ~50 cm away'};
+const VIRT=/OBS|virtual|snap camera|mmhmm|broadcast|droidcam|xsplit|manycam|iriun/i;
+async function openCam(id){if(video.srcObject)video.srcObject.getTracks().forEach(t=>t.stop());
+  const c=id?{deviceId:{exact:id},width:640,height:480}:{width:640,height:480,facingMode:'user'};
+  const st=await navigator.mediaDevices.getUserMedia({video:c});video.srcObject=st;await video.play();return st}
+async function pickCam(){let ds=[];try{ds=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==='videoinput')}catch(e){}
+  const sel=document.getElementById('camSel');if(ds.length<2){sel.style.display='none';return}
+  const cur=video.srcObject.getVideoTracks()[0],curLabel=cur&&cur.label||'';
+  if(VIRT.test(curLabel)){const real=ds.find(d=>!VIRT.test(d.label));if(real){await openCam(real.deviceId)}}
+  const now=video.srcObject.getVideoTracks()[0].getSettings().deviceId;
+  sel.innerHTML=ds.map((d,i)=>`<option value="${d.deviceId}" ${d.deviceId===now?'selected':''}>📷 ${d.label||('Camera '+(i+1))}</option>`).join('');
+  sel.style.display='block';sel.onchange=()=>openCam(sel.value).catch(e=>{msg.textContent='⚠ '+e.message})}
 let lastDet=0,errN=0,cal={lo:1.15,hi:1.6};
 async function detErr(e){errN++;const t='⚠ '+(e&&e.message||e);cam.status=t;document.getElementById('hud').textContent=t;
   if(cam.dev==='GPU'&&cam.vision){const old=cam.lm;cam.lm=null;cam.dev='CPU';try{cam.lm=await cam.vision.HandLandmarker.createFromOptions(cam.fs,cam.opt('CPU'));try{old.close()}catch(_){}}catch(e2){cam.status='⚠ '+(e2&&e2.message||e2)}}}
@@ -468,7 +480,7 @@ function detect(){
     if(p&&!pinching){pinching=true;grab(ema.px,ema.py)}else if(p&&pinching)move(ema.px,ema.py);else if(!p&&pinching){pinching=false;release()}
     cursor.setAttribute('fill',pinching?'rgba(192,86,59,.35)':'none');hud.push(u.R+' '+(pinching?u.pinch:u.point));
   }else{cursor.setAttribute('opacity',0);if(pinching){pinching=false;release()}ema.px=null;if(!L.custom)hud.push(u.R+' '+u.none)}
-  document.getElementById('hud').textContent=(hands.length?'✋'+hands.length+' · '+hud.join(' · '):'🔍 '+HINT[lang])+' · '+cam.dev+' · v3';
+  document.getElementById('hud').textContent=(hands.length?'✋'+hands.length+' · '+hud.join(' · '):'🔍 '+HINT[lang])+' · '+cam.dev+' · v4';
 }
 
 if(MOB)document.querySelector('main').appendChild(document.querySelector('.vid'));
