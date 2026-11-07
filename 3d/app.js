@@ -178,7 +178,8 @@ const v3 = new THREE.Vector3(), box3 = new THREE.Box3();
 let lastLabelRects = [];
 function layoutLabels() {
   const W = innerWidth, H = innerHeight;
-  if (!S.labels || S.cur.e > 0.02 && S.cur.e < 0.5) { pillsEl.style.display = 'none'; leadsEl.innerHTML = ''; lastLabelRects = []; return; }
+  const short = innerHeight < 500; document.body.classList.toggle('short', short);
+  if (!S.labels || short || S.cur.e > 0.02 && S.cur.e < 0.5) { pillsEl.style.display = 'none'; leadsEl.innerHTML = ''; lastLabelRects = []; return; }
   pillsEl.style.display = '';
   const top = 58, bottom = H - dockH() - 8;
   const cols = { L: [], R: [] };
@@ -219,10 +220,11 @@ function layoutLabels() {
   for (const k in pills) if (!rects.find((r) => r.k === k)) pills[k].style.transform = 'translate(-999px,-999px)';
   leadsEl.innerHTML = svg; lastLabelRects = rects;
 }
-function dockH() { return innerWidth >= 900 ? 0 : $('dock').offsetHeight; }
+// layout height of the dock without the info card, so opening the card never moves the body
+function dockH() { if (innerWidth >= 900) return 0; const c = $('card'); return $('dock').offsetHeight - (c.classList.contains('show') ? c.offsetHeight + 8 : 0); }
 
 // ---------- camera fit (uniform: camera.aspect always equals canvas aspect) ----------
-const colW = () => (S.labels && innerWidth < 900 ? Math.min(150, Math.max(96, innerWidth * 0.27)) : 0);
+const colW = () => (S.labels && innerHeight >= 500 && innerWidth < 900 ? Math.min(150, Math.max(96, innerWidth * 0.27)) : 0);
 function fitDistance(box) {
   const W = innerWidth, H = innerHeight, availH = H - 58 - dockH() - 10, availW = W - 2 * colW() * 0.55 - 12;
   const size = box.getSize(new THREE.Vector3());
@@ -263,13 +265,21 @@ renderer.domElement.addEventListener('pointerup', (e) => {
   const wasMulti = multi; if (taps.size === 0) multi = false;
   if (!s || wasMulti) return;
   if (Math.hypot(e.clientX - s.x, e.clientY - s.y) > 8 || performance.now() - s.t > 600) return;
-  ndc.set(e.clientX / innerWidth * 2 - 1, -(e.clientY / innerHeight) * 2 + 1);
-  ray.setFromCamera(ndc, camera);
-  const hit = ray.intersectObjects(parts.map((p) => p.mesh), false)[0];
-  const k = hit ? hit.object.userData.key : null;
+  const k = fingerPick(e.clientX, e.clientY);
   select(k && k !== S.sel ? k : null);
 });
 renderer.domElement.addEventListener('pointercancel', (e) => { taps.delete(e.pointerId); });
+
+// Finger-tolerant picking: the centre ray decides when it hits; otherwise the bone hit most often
+// within a 9 px / 18 px ring wins (thin bones such as fingers, fibula and ribs are hard to hit exactly).
+const RING = [[0, 0, 0]].concat([...Array(8)].map((_, i) => [Math.cos(i * Math.PI / 4) * 9, Math.sin(i * Math.PI / 4) * 9, 1]), [...Array(12)].map((_, i) => [Math.cos(i * Math.PI / 6) * 18, Math.sin(i * Math.PI / 6) * 18, 2]));
+function rayKey(x, y) { ndc.set(x / innerWidth * 2 - 1, -(y / innerHeight) * 2 + 1); ray.setFromCamera(ndc, camera); const h = ray.intersectObjects(parts.map((p) => p.mesh), false)[0]; return h ? h.object.userData.key : null; }
+function fingerPick(x, y) {
+  const c = rayKey(x, y); if (c) return c;
+  const score = {};
+  for (const [dx, dy, ring] of RING.slice(1)) { const k = rayKey(x + dx, y + dy); if (k) score[k] = (score[k] || 0) + (ring === 1 ? 2 : 1); }
+  let best = null; for (const k in score) if (!best || score[k] > score[best]) best = k; return best;
+}
 
 // ---------- info card ----------
 function renderCard() {
@@ -280,7 +290,7 @@ function renderCard() {
   $('cName').innerHTML = `${it.name[lang]} <small style="font-size:13px;color:var(--mut)">${paired ? u.pair : ''}</small> ${zone} ${it.exam ? '' : `<span class="extra">${u.extra}</span>`}`;
   $('cCa').textContent = lang !== 'ca' ? it.name.ca : '';
   $('cDef').textContent = it.def[lang] || '';
-  c.classList.add('show'); requestAnimationFrame(() => { refit(false); invalidate(); });
+  c.classList.add('show'); invalidate(); // no refit: the body must not jump under the child's finger when the card opens
 }
 $('cardX').onclick = () => select(null);
 
@@ -400,7 +410,7 @@ window.__coshuma = {
   bodyRect() { const b = currentBox(); const pts = []; for (const x of [b.min.x, b.max.x]) for (const y of [b.min.y, b.max.y]) for (const z of [b.min.z, b.max.z]) { v3.set(x, y, z).project(camera); pts.push([(v3.x + 1) / 2 * innerWidth, (1 - v3.y) / 2 * innerHeight]); } return { x0: Math.min(...pts.map((p) => p[0])), x1: Math.max(...pts.map((p) => p[0])), y0: Math.min(...pts.map((p) => p[1])), y1: Math.max(...pts.map((p) => p[1])) }; },
   idle: () => !frameReq && !bench.on, diag: diagData, startBench,
   eligible: (it, field) => it.exam === true && ['confirmed', 'transcribed'].includes(it.status?.[field]),
-  pickAt(x, y) { ndc.set(x / innerWidth * 2 - 1, -(y / innerHeight) * 2 + 1); ray.setFromCamera(ndc, camera); const h = ray.intersectObjects(parts.map((p) => p.mesh), false)[0]; return h ? h.object.userData.key : null; },
+  pickAt: (x, y) => rayKey(x, y), fingerPick,
   samplePoints(k, n = 6) { // screen points whose first hit is this item (what a child would aim at)
     const out = []; const ps = parts.filter((p) => p.key === k);
     for (const p of ps) { const pos = p.mesh.geometry.attributes.position; const step = Math.max(1, Math.floor(pos.count / 60));

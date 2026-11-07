@@ -51,6 +51,8 @@ header select,header a,.btn{pointer-events:auto;font:inherit;font-size:14px;bord
 #err .erow{display:flex;gap:6px;flex-wrap:wrap}
 #zoneLegend{position:fixed;top:56px;right:10px;display:none;flex-direction:column;align-items:flex-end;gap:4px;pointer-events:none}
 #zoneLegend span{font-size:12px;font-weight:700;color:#2b2622;border:2px solid;border-radius:10px;padding:1px 8px;width:max-content}
+#rotHint{display:none;position:fixed;top:52px;left:50%;transform:translateX(-50%);font-size:12px;background:#fffaf2;border:1px solid var(--line);border-radius:10px;padding:3px 10px;pointer-events:none;white-space:nowrap}
+body.short #rotHint{display:block}body.short #dock .row:last-child{display:none}body.short header h1 small{display:none}
 @media (min-width:700px){.pill{font-size:15px;padding:5px 12px;line-height:20px}}
 @media (min-width:900px){#dock{left:auto;right:12px;bottom:12px;width:420px;background:#f4efe6ee;border-radius:16px;padding:10px;box-shadow:0 4px 18px #0002}}
 </style>
@@ -66,6 +68,7 @@ header select,header a,.btn{pointer-events:auto;font:inherit;font-size:14px;bord
   <a id="book" href="https://xgridseurope.github.io/cos-huma/" target="_blank" rel="noopener">📖 2D</a>
 </header>
 <div id="zoneLegend"></div>
+<div id="rotHint">📱↻ Gira el mòbil en vertical per veure els noms · 竖屏显示名称</div>
 <div id="dock">
   <div id="card"><button class="x" id="cardX" aria-label="Tanca">×</button><h2 id="cName"></h2><div class="ca" id="cCa"></div><p id="cDef"></p></div>
   <div class="row"><button class="btn" id="bJoin">🧩 <span id="tJoin">Munta</span></button><span class="sl-lbl" id="slVal">0%</span><input type="range" id="slider" min="0" max="100" value="0" aria-label="Desmunta"><button class="btn" id="bSplit">💥 <span id="tSplit">Desmunta</span></button></div>
@@ -103,7 +106,7 @@ header select,header a,.btn{pointer-events:auto;font:inherit;font-size:14px;bord
     document.getElementById('loading').style.display = 'none';
     document.getElementById('errMsg').textContent = MSG[stage] || MSG.script;
     document.getElementById('errDetail').textContent = '[' + stage + '] ' + (err && err.message || err) + '\n' + navigator.userAgent;
-    document.getElementById('errEmb').style.display = (stage === 'model' && !/model=embedded/.test(location.search)) ? '' : 'none';
+    document.getElementById('errEmb').style.display = (stage === 'model' && !/model=embedded/.test(location.search) && !/embedded/.test(location.hash)) ? '' : 'none';
     document.getElementById('err').classList.add('show');
   };
   window.addEventListener('error', function (e) { if (!window.__coshumaReady) window.__coshumaFail('script', e.message || (e.target && e.target.src) || 'error'); }, true);
@@ -111,7 +114,7 @@ header select,header a,.btn{pointer-events:auto;font:inherit;font-size:14px;bord
   setTimeout(function () { if (!window.__coshumaReady) window.__coshumaFail('timeout', 'no ready after 60 s'); }, 60000);
   document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('errRetry').onclick = function () { location.reload(); };
-    document.getElementById('errEmb').onclick = function () { var u = new URL(location.href); u.searchParams.set('model', 'embedded'); location.href = u.toString(); };
+    document.getElementById('errEmb').onclick = function () { location.hash = 'embedded'; location.reload(); };
   });
 })();
 </script>
