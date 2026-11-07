@@ -322,7 +322,7 @@ function render(){
   else if(mode==='zona')cs.textContent=u.dragZone;else if(mode==='tipus')cs.textContent=u.dragType;
   else cs.textContent=curT<.2?u.s0+' · '+u.fact[L.id]:curT<.62?u.s1:u.s2;
   if(!cam.on)document.getElementById('hud').textContent=Math.round(curT*100)+'%';
-  if(cam.on&&cam.lm){const n=performance.now();if(n-lastDet>45){lastDet=n;try{detect()}catch(e){detErr(e)}}}else if(cam.on)document.getElementById('hud').textContent=cam.status||'…';
+  if(cam.on&&cam.lm){const n=performance.now();if(n-lastDet>45){lastDet=n;try{detect()}catch(e){detErr(e)}}}else if(cam.on)document.getElementById('hud').textContent=(cam.status||'…')+' · v3';
   requestAnimationFrame(render);
 }
 
@@ -439,6 +439,7 @@ document.getElementById('camBtn').onclick=async()=>{
   }catch(e){const t='⚠ '+(e&&e.message||e);msg.textContent=t;cam.status=t}
 };
 const D=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);let lastTs=-1;
+const HINT={ca:'Ensenya tota la mà (amb el canell), a 50 cm',es:'Enseña toda la mano (con la muñeca), a 50 cm',zh:'把整只手（含手腕）放进画面，离镜头约 50 厘米',en:'Show your whole hand (with wrist), ~50 cm away'};
 let lastDet=0,errN=0,cal={lo:1.15,hi:1.6};
 async function detErr(e){errN++;const t='⚠ '+(e&&e.message||e);cam.status=t;document.getElementById('hud').textContent=t;
   if(cam.dev==='GPU'&&cam.vision){const old=cam.lm;cam.lm=null;cam.dev='CPU';try{cam.lm=await cam.vision.HandLandmarker.createFromOptions(cam.fs,cam.opt('CPU'));try{old.close()}catch(_){}}catch(e2){cam.status='⚠ '+(e2&&e2.message||e2)}}}
@@ -467,7 +468,7 @@ function detect(){
     if(p&&!pinching){pinching=true;grab(ema.px,ema.py)}else if(p&&pinching)move(ema.px,ema.py);else if(!p&&pinching){pinching=false;release()}
     cursor.setAttribute('fill',pinching?'rgba(192,86,59,.35)':'none');hud.push(u.R+' '+(pinching?u.pinch:u.point));
   }else{cursor.setAttribute('opacity',0);if(pinching){pinching=false;release()}ema.px=null;if(!L.custom)hud.push(u.R+' '+u.none)}
-  document.getElementById('hud').textContent=(hands.length?'✋'+hands.length+' · ':'🔍 ')+hud.join(' · ')+' · '+cam.dev;
+  document.getElementById('hud').textContent=(hands.length?'✋'+hands.length+' · '+hud.join(' · '):'🔍 '+HINT[lang])+' · '+cam.dev+' · v3';
 }
 
 if(MOB)document.querySelector('main').appendChild(document.querySelector('.vid'));
