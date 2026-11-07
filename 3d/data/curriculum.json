@@ -1,0 +1,978 @@
+{
+ "version": "0.2",
+ "statusLegend": {
+  "confirmed": "checked by a person against textbook pp.25/27",
+  "transcribed": "copied from the textbook photos into the 2D app (AI transcription, not yet checked by a person)",
+  "pending": "written for the 2D app, not from the textbook; must not be used in exercises until confirmed",
+  "not-in-textbook": "extra shown in 3D only; never labelled or used in exercises"
+ },
+ "exerciseRule": "exercises may only use items with exam=true and fields whose status is confirmed or transcribed",
+ "source": "xgridseurope/cos-huma index.html (2D, transcribed from textbook pp.25 & 27)",
+ "zones": {
+  "cap": {
+   "c": "#4f86d0",
+   "ca": "Cap",
+   "es": "Cabeza",
+   "zh": "头部",
+   "en": "Head"
+  },
+  "tronc": {
+   "c": "#e58a2e",
+   "ca": "Tronc",
+   "es": "Tronco",
+   "zh": "躯干",
+   "en": "Trunk"
+  },
+  "ext": {
+   "c": "#46a05e",
+   "ca": "Extremitats",
+   "es": "Extremidades",
+   "zh": "四肢",
+   "en": "Limbs"
+  }
+ },
+ "types": {
+  "llarg": {
+   "c": "#7a5cc4",
+   "ca": "Os llarg",
+   "es": "Hueso largo",
+   "zh": "长骨",
+   "en": "Long bone"
+  },
+  "pla": {
+   "c": "#2f9aa0",
+   "ca": "Os pla",
+   "es": "Hueso plano",
+   "zh": "扁骨",
+   "en": "Flat bone"
+  },
+  "curt": {
+   "c": "#c0563b",
+   "ca": "Os curt",
+   "es": "Hueso corto",
+   "zh": "短骨",
+   "en": "Short bone"
+  }
+ },
+ "items": [
+  {
+   "key": "crani",
+   "lesson": "esquelet",
+   "exam": true,
+   "zone": "cap",
+   "type": "pla",
+   "name": {
+    "ca": "Crani",
+    "es": "Cráneo",
+    "zh": "颅骨",
+    "en": "Skull"
+   },
+   "def": {
+    "ca": "Ossos plans que protegeixen el cervell",
+    "es": "Huesos planos que protegen el cerebro",
+    "zh": "扁骨，保护大脑",
+    "en": "Flat bones that protect the brain"
+   },
+   "status": {
+    "name": "transcribed",
+    "zone": "transcribed",
+    "type": "pending",
+    "def": "pending"
+   }
+  },
+  {
+   "key": "maxillar",
+   "lesson": "esquelet",
+   "exam": true,
+   "zone": "cap",
+   "type": null,
+   "name": {
+    "ca": "Maxil·lar",
+    "es": "Maxilar",
+    "zh": "下颌骨",
+    "en": "Jawbone"
+   },
+   "def": {
+    "ca": "Es mou per mastegar i parlar",
+    "es": "Se mueve para masticar y hablar",
+    "zh": "能动，用来咀嚼和说话",
+    "en": "Moves to chew and talk"
+   },
+   "status": {
+    "name": "transcribed",
+    "zone": "transcribed",
+    "type": "pending",
+    "def": "pending"
+   }
+  },
+  {
+   "key": "columna",
+   "lesson": "esquelet",
+   "exam": true,
+   "zone": "tronc",
+   "type": "curt",
+   "name": {
+    "ca": "Columna vertebral",
+    "es": "Columna vertebral",
+    "zh": "脊柱",
+    "en": "Spine"
+   },
+   "def": {
+    "ca": "Feta de vèrtebres; protegeix la medul·la espinal",
+    "es": "Hecha de vértebras; protege la médula espinal",
+    "zh": "由椎骨组成，保护脊髓",
+    "en": "Made of vertebrae; protects the spinal cord"
+   },
+   "status": {
+    "name": "transcribed",
+    "zone": "transcribed",
+    "type": "pending",
+    "def": "pending"
+   }
+  },
+  {
+   "key": "costella",
+   "lesson": "esquelet",
+   "exam": true,
+   "zone": "tronc",
+   "type": "pla",
+   "name": {
+    "ca": "Costelles",
+    "es": "Costillas",
+    "zh": "肋骨",
+    "en": "Ribs"
+   },
+   "def": {
+    "ca": "Protegeixen el cor i els pulmons",
+    "es": "Protegen el corazón y los pulmones",
+    "zh": "保护心脏和肺",
+    "en": "Protect the heart and lungs"
+   },
+   "status": {
+    "name": "transcribed",
+    "zone": "transcribed",
+    "type": "pending",
+    "def": "pending"
+   }
+  },
+  {
+   "key": "estern",
+   "lesson": "esquelet",
+   "exam": true,
+   "zone": "tronc",
+   "type": "pla",
+   "name": {
+    "ca": "Estern",
+    "es": "Esternón",
+    "zh": "胸骨",
+    "en": "Sternum"
+   },
+   "def": {
+    "ca": "Les costelles s'uneixen a l'estern i a les vèrtebres",
+    "es": "Las costillas se unen al esternón y a las vértebras",
+    "zh": "肋骨连在胸骨和椎骨上",
+    "en": "Ribs join the sternum and the vertebrae"
+   },
+   "status": {
+    "name": "transcribed",
+    "zone": "transcribed",
+    "type": "pending",
+    "def": "pending"
+   }
+  },
+  {
+   "key": "pelvis",
+   "lesson": "esquelet",
+   "exam": true,
+   "zone": "tronc",
+   "type": null,
+   "name": {
+    "ca": "Pelvis",
+    "es": "Pelvis",
+    "zh": "骨盆",
+    "en": "Pelvis"
+   },
+   "def": {
+    "ca": "Uneix la columna amb les cames",
+    "es": "Une la columna con las piernas",
+    "zh": "连接脊柱和双腿",
+    "en": "Links the spine and the legs"
+   },
+   "status": {
+    "name": "transcribed",
+    "zone": "transcribed",
+    "type": "pending",
+    "def": "pending"
+   }
+  },
+  {
+   "key": "omoplat",
+   "lesson": "esquelet",
+   "exam": true,
+   "zone": "tronc",
+   "type": "pla",
+   "name": {
+    "ca": "Omòplat",
+    "es": "Omóplato",
+    "zh": "肩胛骨",
+    "en": "Shoulder blade"
+   },
+   "def": {
+    "ca": "Os pla de l'espatlla",
+    "es": "Hueso plano del hombro",
+    "zh": "肩膀后面的扁骨",
+    "en": "Flat bone of the shoulder"
+   },
+   "status": {
+    "name": "transcribed",
+    "zone": "transcribed",
+    "type": "pending",
+    "def": "pending"
+   }
+  },
+  {
+   "key": "humer",
+   "lesson": "esquelet",
+   "exam": true,
+   "zone": "ext",
+   "type": "llarg",
+   "name": {
+    "ca": "Húmer",
+    "es": "Húmero",
+    "zh": "肱骨",
+    "en": "Humerus"
+   },
+   "def": {
+    "ca": "Os llarg del braç",
+    "es": "Hueso largo del brazo",
+    "zh": "上臂的长骨",
+    "en": "Long bone of the upper arm"
+   },
+   "status": {
+    "name": "transcribed",
+    "zone": "transcribed",
+    "type": "pending",
+    "def": "pending"
+   }
+  },
+  {
+   "key": "cubit",
+   "lesson": "esquelet",
+   "exam": true,
+   "zone": "ext",
+   "type": "llarg",
+   "name": {
+    "ca": "Cúbit",
+    "es": "Cúbito",
+    "zh": "尺骨",
+    "en": "Ulna"
+   },
+   "def": {
+    "ca": "Avantbraç, costat del dit petit",
+    "es": "Antebrazo, lado del meñique",
+    "zh": "前臂，小指一侧",
+    "en": "Forearm, little-finger side"
+   },
+   "status": {
+    "name": "transcribed",
+    "zone": "transcribed",
+    "type": "pending",
+    "def": "pending"
+   }
+  },
+  {
+   "key": "radi",
+   "lesson": "esquelet",
+   "exam": true,
+   "zone": "ext",
+   "type": "llarg",
+   "name": {
+    "ca": "Radi",
+    "es": "Radio",
+    "zh": "桡骨",
+    "en": "Radius"
+   },
+   "def": {
+    "ca": "Avantbraç, costat del polze",
+    "es": "Antebrazo, lado del pulgar",
+    "zh": "前臂，拇指一侧",
+    "en": "Forearm, thumb side"
+   },
+   "status": {
+    "name": "transcribed",
+    "zone": "transcribed",
+    "type": "pending",
+    "def": "pending"
+   }
+  },
+  {
+   "key": "carp",
+   "lesson": "esquelet",
+   "exam": true,
+   "zone": "ext",
+   "type": "curt",
+   "name": {
+    "ca": "Carp",
+    "es": "Carpo",
+    "zh": "腕骨",
+    "en": "Carpals"
+   },
+   "def": {
+    "ca": "Ossos petits del canell",
+    "es": "Huesos pequeños de la muñeca",
+    "zh": "手腕的小骨头",
+    "en": "Small wrist bones"
+   },
+   "status": {
+    "name": "transcribed",
+    "zone": "transcribed",
+    "type": "pending",
+    "def": "pending"
+   }
+  },
+  {
+   "key": "metacarp",
+   "lesson": "esquelet",
+   "exam": true,
+   "zone": "ext",
+   "type": null,
+   "name": {
+    "ca": "Metacarp",
+    "es": "Metacarpo",
+    "zh": "掌骨",
+    "en": "Metacarpals"
+   },
+   "def": {
+    "ca": "Ossos del palmell",
+    "es": "Huesos de la palma",
+    "zh": "手掌的骨头",
+    "en": "Bones of the palm"
+   },
+   "status": {
+    "name": "transcribed",
+    "zone": "transcribed",
+    "type": "pending",
+    "def": "pending"
+   }
+  },
+  {
+   "key": "falma",
+   "lesson": "esquelet",
+   "exam": true,
+   "zone": "ext",
+   "type": "curt",
+   "name": {
+    "ca": "Falanges (mà)",
+    "es": "Falanges (mano)",
+    "zh": "指骨",
+    "en": "Finger bones"
+   },
+   "def": {
+    "ca": "Ossos petits dels dits",
+    "es": "Huesos pequeños de los dedos",
+    "zh": "手指的小骨头",
+    "en": "Small bones of the fingers"
+   },
+   "status": {
+    "name": "transcribed",
+    "zone": "transcribed",
+    "type": "pending",
+    "def": "pending"
+   }
+  },
+  {
+   "key": "femur",
+   "lesson": "esquelet",
+   "exam": true,
+   "zone": "ext",
+   "type": "llarg",
+   "name": {
+    "ca": "Fèmur",
+    "es": "Fémur",
+    "zh": "股骨",
+    "en": "Femur"
+   },
+   "def": {
+    "ca": "L'os més llarg del cos",
+    "es": "El hueso más largo del cuerpo",
+    "zh": "人体最长的骨头",
+    "en": "The longest bone in the body"
+   },
+   "status": {
+    "name": "transcribed",
+    "zone": "transcribed",
+    "type": "pending",
+    "def": "pending"
+   }
+  },
+  {
+   "key": "rotula",
+   "lesson": "esquelet",
+   "exam": true,
+   "zone": "ext",
+   "type": null,
+   "name": {
+    "ca": "Ròtula",
+    "es": "Rótula",
+    "zh": "髌骨（膝盖骨）",
+    "en": "Kneecap"
+   },
+   "def": {
+    "ca": "Protegeix el genoll",
+    "es": "Protege la rodilla",
+    "zh": "保护膝盖",
+    "en": "Protects the knee"
+   },
+   "status": {
+    "name": "transcribed",
+    "zone": "transcribed",
+    "type": "pending",
+    "def": "pending"
+   }
+  },
+  {
+   "key": "tibia",
+   "lesson": "esquelet",
+   "exam": true,
+   "zone": "ext",
+   "type": "llarg",
+   "name": {
+    "ca": "Tíbia",
+    "es": "Tibia",
+    "zh": "胫骨",
+    "en": "Tibia"
+   },
+   "def": {
+    "ca": "Os llarg i gruixut de la cama",
+    "es": "Hueso largo y grueso de la pierna",
+    "zh": "小腿较粗的长骨",
+    "en": "Thick long bone of the lower leg"
+   },
+   "status": {
+    "name": "transcribed",
+    "zone": "transcribed",
+    "type": "pending",
+    "def": "pending"
+   }
+  },
+  {
+   "key": "perone",
+   "lesson": "esquelet",
+   "exam": true,
+   "zone": "ext",
+   "type": "llarg",
+   "name": {
+    "ca": "Peroné",
+    "es": "Peroné",
+    "zh": "腓骨",
+    "en": "Fibula"
+   },
+   "def": {
+    "ca": "Os prim de la cama",
+    "es": "Hueso fino de la pierna",
+    "zh": "小腿较细的骨",
+    "en": "Thin bone of the lower leg"
+   },
+   "status": {
+    "name": "transcribed",
+    "zone": "transcribed",
+    "type": "pending",
+    "def": "pending"
+   }
+  },
+  {
+   "key": "tars",
+   "lesson": "esquelet",
+   "exam": true,
+   "zone": "ext",
+   "type": "curt",
+   "name": {
+    "ca": "Tars",
+    "es": "Tarso",
+    "zh": "跗骨",
+    "en": "Tarsals"
+   },
+   "def": {
+    "ca": "Ossos del turmell",
+    "es": "Huesos del tobillo",
+    "zh": "脚踝的骨头",
+    "en": "Ankle bones"
+   },
+   "status": {
+    "name": "transcribed",
+    "zone": "transcribed",
+    "type": "pending",
+    "def": "pending"
+   }
+  },
+  {
+   "key": "metatars",
+   "lesson": "esquelet",
+   "exam": true,
+   "zone": "ext",
+   "type": null,
+   "name": {
+    "ca": "Metatars",
+    "es": "Metatarso",
+    "zh": "跖骨",
+    "en": "Metatarsals"
+   },
+   "def": {
+    "ca": "Ossos de la planta del peu",
+    "es": "Huesos de la planta del pie",
+    "zh": "脚掌的骨头",
+    "en": "Bones of the sole"
+   },
+   "status": {
+    "name": "transcribed",
+    "zone": "transcribed",
+    "type": "pending",
+    "def": "pending"
+   }
+  },
+  {
+   "key": "fpeu",
+   "lesson": "esquelet",
+   "exam": true,
+   "zone": "ext",
+   "type": "curt",
+   "name": {
+    "ca": "Falanges (peu)",
+    "es": "Falanges (pie)",
+    "zh": "趾骨",
+    "en": "Toe bones"
+   },
+   "def": {
+    "ca": "Ossos petits dels dits del peu",
+    "es": "Huesos pequeños de los dedos del pie",
+    "zh": "脚趾的小骨头",
+    "en": "Small bones of the toes"
+   },
+   "status": {
+    "name": "transcribed",
+    "zone": "transcribed",
+    "type": "pending",
+    "def": "pending"
+   }
+  },
+  {
+   "key": "orbic",
+   "lesson": "musculatura",
+   "exam": true,
+   "zone": "cap",
+   "type": null,
+   "name": {
+    "ca": "Orbicular de les parpelles",
+    "es": "Orbicular de los párpados",
+    "zh": "眼轮匝肌",
+    "en": "Orbicularis oculi"
+   },
+   "def": {
+    "ca": "Múscul anular que tanca els ulls",
+    "es": "Músculo anular que cierra los ojos",
+    "zh": "环形肌，让眼睛闭上",
+    "en": "Ring muscle that closes the eyes"
+   },
+   "status": {
+    "name": "transcribed",
+    "zone": "transcribed",
+    "type": "n/a",
+    "def": "pending"
+   }
+  },
+  {
+   "key": "masseter",
+   "lesson": "musculatura",
+   "exam": true,
+   "zone": "cap",
+   "type": null,
+   "name": {
+    "ca": "Masseter",
+    "es": "Masetero",
+    "zh": "咬肌",
+    "en": "Masseter"
+   },
+   "def": {
+    "ca": "Serveix per mastegar",
+    "es": "Sirve para masticar",
+    "zh": "用来咀嚼",
+    "en": "Used for chewing"
+   },
+   "status": {
+    "name": "transcribed",
+    "zone": "transcribed",
+    "type": "n/a",
+    "def": "pending"
+   }
+  },
+  {
+   "key": "ecm",
+   "lesson": "musculatura",
+   "exam": true,
+   "zone": "tronc",
+   "type": null,
+   "name": {
+    "ca": "Esternoclidomastoidal",
+    "es": "Esternocleidomastoideo",
+    "zh": "胸锁乳突肌",
+    "en": "Sternocleidomastoid"
+   },
+   "def": {
+    "ca": "Gira i inclina el cap",
+    "es": "Gira e inclina la cabeza",
+    "zh": "让头转动和低下",
+    "en": "Turns and tilts the head"
+   },
+   "status": {
+    "name": "transcribed",
+    "zone": "transcribed",
+    "type": "n/a",
+    "def": "pending"
+   }
+  },
+  {
+   "key": "deltoide",
+   "lesson": "musculatura",
+   "exam": true,
+   "zone": "tronc",
+   "type": null,
+   "name": {
+    "ca": "Deltoide",
+    "es": "Deltoides",
+    "zh": "三角肌",
+    "en": "Deltoid"
+   },
+   "def": {
+    "ca": "Aixeca el braç",
+    "es": "Levanta el brazo",
+    "zh": "把手臂抬起来",
+    "en": "Lifts the arm"
+   },
+   "status": {
+    "name": "transcribed",
+    "zone": "transcribed",
+    "type": "n/a",
+    "def": "pending"
+   }
+  },
+  {
+   "key": "pectoral",
+   "lesson": "musculatura",
+   "exam": true,
+   "zone": "tronc",
+   "type": null,
+   "name": {
+    "ca": "Pectoral",
+    "es": "Pectoral",
+    "zh": "胸大肌",
+    "en": "Pectoral"
+   },
+   "def": {
+    "ca": "Mou el braç cap endavant",
+    "es": "Mueve el brazo hacia delante",
+    "zh": "让手臂向前",
+    "en": "Moves the arm forward"
+   },
+   "status": {
+    "name": "transcribed",
+    "zone": "transcribed",
+    "type": "n/a",
+    "def": "pending"
+   }
+  },
+  {
+   "key": "abdominal",
+   "lesson": "musculatura",
+   "exam": true,
+   "zone": "tronc",
+   "type": null,
+   "name": {
+    "ca": "Abdominal",
+    "es": "Abdominal",
+    "zh": "腹肌",
+    "en": "Abdominals"
+   },
+   "def": {
+    "ca": "Protegeix els òrgans de l'abdomen",
+    "es": "Protege los órganos del abdomen",
+    "zh": "保护肚子里的器官",
+    "en": "Protect the belly organs"
+   },
+   "status": {
+    "name": "transcribed",
+    "zone": "transcribed",
+    "type": "n/a",
+    "def": "pending"
+   }
+  },
+  {
+   "key": "biceps",
+   "lesson": "musculatura",
+   "exam": true,
+   "zone": "ext",
+   "type": null,
+   "name": {
+    "ca": "Bíceps",
+    "es": "Bíceps",
+    "zh": "肱二头肌",
+    "en": "Biceps"
+   },
+   "def": {
+    "ca": "Es contreu per doblegar el braç",
+    "es": "Se contrae para doblar el brazo",
+    "zh": "收缩时手臂弯曲",
+    "en": "Contracts to bend the arm"
+   },
+   "status": {
+    "name": "transcribed",
+    "zone": "transcribed",
+    "type": "n/a",
+    "def": "pending"
+   }
+  },
+  {
+   "key": "quadriceps",
+   "lesson": "musculatura",
+   "exam": true,
+   "zone": "ext",
+   "type": null,
+   "name": {
+    "ca": "Quàdriceps",
+    "es": "Cuádriceps",
+    "zh": "股四头肌",
+    "en": "Quadriceps"
+   },
+   "def": {
+    "ca": "Estira la cama",
+    "es": "Estira la pierna",
+    "zh": "把腿伸直",
+    "en": "Straightens the leg"
+   },
+   "status": {
+    "name": "transcribed",
+    "zone": "transcribed",
+    "type": "n/a",
+    "def": "pending"
+   }
+  },
+  {
+   "key": "tibial",
+   "lesson": "musculatura",
+   "exam": true,
+   "zone": "ext",
+   "type": null,
+   "name": {
+    "ca": "Tibial",
+    "es": "Tibial",
+    "zh": "胫骨前肌",
+    "en": "Tibialis"
+   },
+   "def": {
+    "ca": "Aixeca la punta del peu",
+    "es": "Levanta la punta del pie",
+    "zh": "把脚尖抬起",
+    "en": "Lifts the toes"
+   },
+   "status": {
+    "name": "transcribed",
+    "zone": "transcribed",
+    "type": "n/a",
+    "def": "pending"
+   }
+  },
+  {
+   "key": "trapezi",
+   "lesson": "musculatura",
+   "exam": true,
+   "zone": "tronc",
+   "type": null,
+   "name": {
+    "ca": "Trapezi",
+    "es": "Trapecio",
+    "zh": "斜方肌",
+    "en": "Trapezius"
+   },
+   "def": {
+    "ca": "Mou les espatlles i el cap",
+    "es": "Mueve los hombros y la cabeza",
+    "zh": "让肩膀和头动",
+    "en": "Moves shoulders and head"
+   },
+   "status": {
+    "name": "transcribed",
+    "zone": "transcribed",
+    "type": "n/a",
+    "def": "pending"
+   }
+  },
+  {
+   "key": "dorsal",
+   "lesson": "musculatura",
+   "exam": true,
+   "zone": "tronc",
+   "type": null,
+   "name": {
+    "ca": "Dorsal",
+    "es": "Dorsal",
+    "zh": "背阔肌",
+    "en": "Latissimus"
+   },
+   "def": {
+    "ca": "Mou el braç cap enrere",
+    "es": "Mueve el brazo hacia atrás",
+    "zh": "把手臂向后拉",
+    "en": "Pulls the arm back"
+   },
+   "status": {
+    "name": "transcribed",
+    "zone": "transcribed",
+    "type": "n/a",
+    "def": "pending"
+   }
+  },
+  {
+   "key": "triceps",
+   "lesson": "musculatura",
+   "exam": true,
+   "zone": "ext",
+   "type": null,
+   "name": {
+    "ca": "Tríceps",
+    "es": "Tríceps",
+    "zh": "肱三头肌",
+    "en": "Triceps"
+   },
+   "def": {
+    "ca": "Es contreu per estirar el braç",
+    "es": "Se contrae para estirar el brazo",
+    "zh": "收缩时手臂伸直",
+    "en": "Contracts to straighten the arm"
+   },
+   "status": {
+    "name": "transcribed",
+    "zone": "transcribed",
+    "type": "n/a",
+    "def": "pending"
+   }
+  },
+  {
+   "key": "gluti",
+   "lesson": "musculatura",
+   "exam": true,
+   "zone": "tronc",
+   "type": null,
+   "name": {
+    "ca": "Gluti",
+    "es": "Glúteo",
+    "zh": "臀大肌",
+    "en": "Gluteus"
+   },
+   "def": {
+    "ca": "Mou la cama cap enrere",
+    "es": "Mueve la pierna hacia atrás",
+    "zh": "让腿向后摆",
+    "en": "Moves the leg back"
+   },
+   "status": {
+    "name": "transcribed",
+    "zone": "transcribed",
+    "type": "n/a",
+    "def": "pending"
+   }
+  },
+  {
+   "key": "bfem",
+   "lesson": "musculatura",
+   "exam": true,
+   "zone": "ext",
+   "type": null,
+   "name": {
+    "ca": "Bíceps femoral",
+    "es": "Bíceps femoral",
+    "zh": "股二头肌",
+    "en": "Hamstring"
+   },
+   "def": {
+    "ca": "Doblega el genoll",
+    "es": "Dobla la rodilla",
+    "zh": "让膝盖弯曲",
+    "en": "Bends the knee"
+   },
+   "status": {
+    "name": "transcribed",
+    "zone": "transcribed",
+    "type": "n/a",
+    "def": "pending"
+   }
+  },
+  {
+   "key": "besso",
+   "lesson": "musculatura",
+   "exam": true,
+   "zone": "ext",
+   "type": null,
+   "name": {
+    "ca": "Bessó",
+    "es": "Gemelo",
+    "zh": "腓肠肌（小腿肚）",
+    "en": "Calf muscle"
+   },
+   "def": {
+    "ca": "Ens posa de puntetes",
+    "es": "Nos pone de puntillas",
+    "zh": "让我们踮起脚尖",
+    "en": "Lifts us onto tiptoes"
+   },
+   "status": {
+    "name": "transcribed",
+    "zone": "transcribed",
+    "type": "n/a",
+    "def": "pending"
+   }
+  },
+  {
+   "key": "clavicula",
+   "lesson": "esquelet",
+   "exam": false,
+   "zone": null,
+   "type": null,
+   "name": {
+    "ca": "Clavícula",
+    "es": "Clavícula",
+    "zh": "锁骨",
+    "en": "Collarbone"
+   },
+   "def": {
+    "ca": "",
+    "es": "",
+    "zh": "",
+    "en": ""
+   },
+   "status": {
+    "name": "not-in-textbook"
+   }
+  },
+  {
+   "key": "altres",
+   "lesson": "esquelet",
+   "exam": false,
+   "zone": null,
+   "type": null,
+   "name": {
+    "ca": "Altres ossos",
+    "es": "Otros huesos",
+    "zh": "其他骨",
+    "en": "Other bones"
+   },
+   "def": {
+    "ca": "",
+    "es": "",
+    "zh": "",
+    "en": ""
+   },
+   "status": {
+    "name": "not-in-textbook"
+   }
+  }
+ ]
+}
