@@ -117,7 +117,8 @@ const N={
 crani:[["Crani","Ossos plans que protegeixen el cervell"],["Cráneo","Huesos planos que protegen el cerebro"],["颅骨","扁骨，保护大脑"],["Skull","Flat bones that protect the brain"]],
 maxillar:[["Maxil·lar","Es mou per mastegar i parlar"],["Maxilar","Se mueve para masticar y hablar"],["下颌骨","能动，用来咀嚼和说话"],["Jawbone","Moves to chew and talk"]],
 columna:[["Columna vertebral","Feta de vèrtebres; protegeix la medul·la espinal"],["Columna vertebral","Hecha de vértebras; protege la médula espinal"],["脊柱","由椎骨组成，保护脊髓"],["Spine","Made of vertebrae; protects the spinal cord"]],
-costella:[["Costelles","Protegeixen el cor i els pulmons"],["Costillas","Protegen el corazón y los pulmones"],["肋骨","保护心脏和肺"],["Ribs","Protect the heart and lungs"]],
+costella:[["Costella","Les costelles protegeixen el cor i els pulmons"],["Costilla","Las costillas protegen el corazón y los pulmones"],["肋骨","保护心脏和肺"],["Rib","The ribs protect the heart and lungs"]],
+vertebra:[["Vèrtebra","Cadascun dels ossos de la columna"],["Vértebra","Cada uno de los huesos de la columna"],["椎骨","组成脊柱的每一节骨头"],["Vertebra","Each small bone of the spine"]],
 estern:[["Estern","Les costelles s'uneixen a l'estern i a les vèrtebres"],["Esternón","Las costillas se unen al esternón y a las vértebras"],["胸骨","肋骨连在胸骨和椎骨上"],["Sternum","Ribs join the sternum and the vertebrae"]],
 pelvis:[["Pelvis","Uneix la columna amb les cames"],["Pelvis","Une la columna con las piernas"],["骨盆","连接脊柱和双腿"],["Pelvis","Links the spine and the legs"]],
 omoplat:[["Omòplat","Os pla de l'espatlla"],["Omóplato","Hueso plano del hombro"],["肩胛骨","肩膀后面的扁骨"],["Shoulder blade","Flat bone of the shoulder"]],
@@ -126,14 +127,14 @@ cubit:[["Cúbit","Avantbraç, costat del dit petit"],["Cúbito","Antebrazo, lado
 radi:[["Radi","Avantbraç, costat del polze"],["Radio","Antebrazo, lado del pulgar"],["桡骨","前臂，拇指一侧"],["Radius","Forearm, thumb side"]],
 carp:[["Carp","Ossos petits del canell"],["Carpo","Huesos pequeños de la muñeca"],["腕骨","手腕的小骨头"],["Carpals","Small wrist bones"]],
 metacarp:[["Metacarp","Ossos del palmell"],["Metacarpo","Huesos de la palma"],["掌骨","手掌的骨头"],["Metacarpals","Bones of the palm"]],
-falma:[["Falanges (mà)","Ossos petits dels dits"],["Falanges (mano)","Huesos pequeños de los dedos"],["指骨","手指的小骨头"],["Finger bones","Small bones of the fingers"]],
+falma:[["Falanges","Ossos petits dels dits"],["Falanges (mano)","Huesos pequeños de los dedos"],["指骨","手指的小骨头"],["Finger bones","Small bones of the fingers"]],
 femur:[["Fèmur","L'os més llarg del cos"],["Fémur","El hueso más largo del cuerpo"],["股骨","人体最长的骨头"],["Femur","The longest bone in the body"]],
 rotula:[["Ròtula","Protegeix el genoll"],["Rótula","Protege la rodilla"],["髌骨（膝盖骨）","保护膝盖"],["Kneecap","Protects the knee"]],
 tibia:[["Tíbia","Os llarg i gruixut de la cama"],["Tibia","Hueso largo y grueso de la pierna"],["胫骨","小腿较粗的长骨"],["Tibia","Thick long bone of the lower leg"]],
 perone:[["Peroné","Os prim de la cama"],["Peroné","Hueso fino de la pierna"],["腓骨","小腿较细的骨"],["Fibula","Thin bone of the lower leg"]],
 tars:[["Tars","Ossos del turmell"],["Tarso","Huesos del tobillo"],["跗骨","脚踝的骨头"],["Tarsals","Ankle bones"]],
 metatars:[["Metatars","Ossos de la planta del peu"],["Metatarso","Huesos de la planta del pie"],["跖骨","脚掌的骨头"],["Metatarsals","Bones of the sole"]],
-fpeu:[["Falanges (peu)","Ossos petits dels dits del peu"],["Falanges (pie)","Huesos pequeños de los dedos del pie"],["趾骨","脚趾的小骨头"],["Toe bones","Small bones of the toes"]],
+fpeu:[["Falanges","Ossos petits dels dits del peu"],["Falanges (pie)","Huesos pequeños de los dedos del pie"],["趾骨","脚趾的小骨头"],["Toe bones","Small bones of the toes"]],
 orbic:[["Orbicular de les parpelles","Múscul anular que tanca els ulls"],["Orbicular de los párpados","Músculo anular que cierra los ojos"],["眼轮匝肌","环形肌，让眼睛闭上"],["Orbicularis oculi","Ring muscle that closes the eyes"]],
 masseter:[["Masseter","Serveix per mastegar"],["Masetero","Sirve para masticar"],["咬肌","用来咀嚼"],["Masseter","Used for chewing"]],
 ecm:[["Esternoclidomastoidal","Gira i inclina el cap"],["Esternocleidomastoideo","Gira e inclina la cabeza"],["胸锁乳突肌","让头转动和低下"],["Sternocleidomastoid","Turns and tilts the head"]],
@@ -153,6 +154,7 @@ const LI={ca:0,es:1,zh:2,en:3};
 const PILL={cap:['#e3e9f3','#9fb2cf'],tronc:['#f9d4a2','#e3a14d'],ext:['#cfe9d2','#80bf8a']};
 let lang='ca';
 const nm=k=>N[k][LI[lang]];
+const lbl=k=>lang==='ca'?nm(k)[0].toLowerCase():nm(k)[0];
 
 // ================= GEOMETRY =================
 const MOB=matchMedia('(max-width:820px)').matches;
@@ -163,8 +165,9 @@ function lessonSkeleton(){
     add({key:'omoplat',zone:'tronc',reg:'tronc',side:s,lab:s==='R',pos:'right',type:'pla',off:[k*95,-55],svg:`<path d="M${X(142)} 170 L${X(181)} 177 L${X(157)} 238Z" class="f" opacity=".85"/>`});}
   add({key:'crani',zone:'cap',reg:'cap',side:'C',pos:'left',anc:[172,42],type:'pla',off:[0,-110],svg:`<ellipse cx="200" cy="64" rx="44" ry="50" class="f"/><ellipse cx="183" cy="70" rx="11" ry="9" class="h"/><ellipse cx="217" cy="70" rx="11" ry="9" class="h"/><path d="M200 82 L194 96 L206 96Z" class="h"/><rect x="181" y="102" width="38" height="9" rx="2" class="f"/>`});
   add({key:'maxillar',zone:'cap',reg:'cap',side:'C',pos:'left',anc:[180,128],off:[0,-62],svg:`<path d="M168 100 Q170 140 200 143 Q230 140 232 100 L224 106 Q222 128 200 131 Q178 128 176 106Z" class="f"/>`});
-  let sp='';for(let y=150;y<=420;y+=11.5)sp+=`<rect x="193" y="${y}" width="14" height="9" rx="3" class="f"/>`;
-  add({key:'columna',zone:'tronc',reg:'tronc',side:'C',pos:'left',anc:[200,395],type:'curt',off:[0,48],svg:sp});
+  let sp='';for(let i=0;150+i*11.5<=420;i++){if(i===20)continue;const y=150+i*11.5;sp+=`<rect x="193" y="${y}" width="14" height="9" rx="3" class="f"/>`}
+  add({key:'columna',zone:'tronc',reg:'tronc',side:'C',pos:'left',anc:[200,335],off:[0,48],svg:sp});
+  add({key:'vertebra',zone:'tronc',reg:'tronc',side:'C',pos:'left',anc:[200,385],type:'curt',off:[45,62],svg:`<rect x="191" y="380" width="18" height="10" rx="3" class="f"/><rect x="186" y="383" width="28" height="4" rx="2" class="f"/>`});
   const W=[40,52,60,64,66,66,64,60,54,46,30,22];let rb='';
   W.forEach((w,i)=>{const y=180+i*10;for(const k of[-1,1]){const end=i<10?`${200+k*9} ${y+26+i*1.5}`:`${200+k*w*.85} ${y+20}`;const d=`M${200+k*6} ${y} C${200+k*w*1.25} ${y-12} ${200+k*w*1.2} ${y+28} ${end}`;rb+=`<path d="${d}" fill="none" stroke="var(--s)" stroke-width="6" stroke-linecap="round"/><path d="${d}" fill="none" stroke="var(--f)" stroke-width="3.5" stroke-linecap="round"/>`}});
   add({key:'costella',zone:'tronc',reg:'tronc',side:'C',pos:'left',anc:[160,205],type:'pla',off:[0,-25],svg:rb});
@@ -271,7 +274,7 @@ function applyLang(){
   md.querySelectorAll('button').forEach(b=>b.onclick=()=>setMode(b.dataset.m));
   for(const r in regLabels){const z=zoneOfReg(r);regLabels[r].textContent=ZONE[z][lang];regLabels[r].setAttribute('fill',ZONE[z].c)}
   parts.forEach(p=>{if(!p.card)return;const [n]=nm(p.key);const tn=p.card.querySelector('.n');
-    tn.textContent=n+(p.side!=='C'?u.pair:'');
+    tn.textContent=lbl(p.key);
     p.cw=tn.getComputedTextLength()+24;p.card.querySelector('rect').setAttribute('width',p.cw)});
   if(L.custom)armText();
   renderBins();showQuiz();
@@ -323,7 +326,7 @@ function render(){
   else if(mode==='zona')cs.textContent=u.dragZone;else if(mode==='tipus')cs.textContent=u.dragType;
   else cs.textContent=curT<.2?u.s0+' · '+u.fact[L.id]:curT<.62?u.s1:u.s2;
   if(!cam.on)document.getElementById('hud').textContent=Math.round(curT*100)+'%';
-  if(cam.on&&cam.lm){const n=performance.now();if(n-lastDet>45){lastDet=n;try{detect()}catch(e){detErr(e)}}}else if(cam.on)document.getElementById('hud').textContent=(cam.status||'…')+' · v6';
+  if(cam.on&&cam.lm){const n=performance.now();if(n-lastDet>45){lastDet=n;try{detect()}catch(e){detErr(e)}}}else if(cam.on)document.getElementById('hud').textContent=(cam.status||'…')+' · v8';
   requestAnimationFrame(render);
 }
 
@@ -338,13 +341,13 @@ function setMode(m){
   document.querySelectorAll('#modes button').forEach(b=>b.classList.toggle('on',b.dataset.m===m));
   renderBins();showQuiz();
 }
-function nextQ(){const ks=[...new Set(parts.map(p=>p.key))];let k;do{k=ks[Math.floor(Math.random()*ks.length)]}while(k===quiz.target&&ks.length>1);quiz.target=k;showQuiz()}
+function nextQ(){const seen=new Set(),ks=[...new Set(parts.map(p=>p.key))].filter(k=>{const n=nm(k)[0];if(seen.has(n))return false;seen.add(n);return true});let k;do{k=ks[Math.floor(Math.random()*ks.length)]}while(k===quiz.target&&ks.length>1);quiz.target=k;showQuiz()}
 function showQuiz(msg){const u=T[lang],q=document.getElementById('quiz');
-  if(mode==='troba'){q.style.display='block';q.innerHTML=(msg?msg+' ':'')+u.find+'<b>'+nm(quiz.target)[0]+'</b><small>'+u.score+' '+quiz.score+'/'+quiz.n+'</small>'}
+  if(mode==='troba'){q.style.display='block';q.innerHTML=(msg?msg+' ':'')+u.find+'<b>'+lbl(quiz.target)+'</b><small>'+u.score+' '+quiz.score+'/'+quiz.n+'</small>'}
   else if(mode==='zona'||mode==='tipus'){const ks=sortKeys(),d=ks.filter(k=>parts.find(p=>p.key===k).done).length;q.style.display='block';q.innerHTML=(msg?msg+' ':'')+(d===ks.length?u.allDone:'<b>'+d+' / '+ks.length+'</b>')}
   else q.style.display='none'}
 function sortKeys(){return[...new Set(parts.filter(p=>mode!=='tipus'||p.type).map(p=>p.key))]}
-function answer(p){quiz.n++;const ok=p.key===quiz.target;flash(p,ok);if(ok){quiz.score++;showQuiz(T[lang].ok);setTimeout(nextQ,900)}else showQuiz(T[lang].bad)}
+function answer(p){quiz.n++;const ok=p.key===quiz.target||nm(p.key)[0]===nm(quiz.target)[0];flash(p,ok);if(ok){quiz.score++;showQuiz(T[lang].ok);setTimeout(nextQ,900)}else showQuiz(T[lang].bad)}
 function flash(p,ok){parts.filter(q=>q.key===p.key).forEach(q=>{q.el.classList.add(ok?'ok':'bad');setTimeout(()=>q.el.classList.remove('ok','bad'),700)})}
 function renderBins(){const el=document.getElementById('bins');
   if(mode!=='zona'&&mode!=='tipus'){el.style.display='none';return}
@@ -392,7 +395,7 @@ let armState='';
 function armText(){const u=T[lang].arm,c=curT<.5;
   const fill=(g,n,d,hot)=>{const tn=g.querySelector('.n'),td=g.querySelector('.d');tn.textContent=n;if(td){td.textContent=d;td.style.fill=hot?'#c8323c':'#8a8076';td.style.fontWeight=hot?'700':'400'}
     g.querySelector('rect').setAttribute('width',Math.max(tn.getComputedTextLength(),td?td.getComputedTextLength():0)+20)};
-  fill(armEl.lB,u.bic,u[c?'con':'rel'],c);fill(armEl.lT,u.tri,u[c?'rel':'con'],!c);fill(armEl.lE,u.elbow);armState=c+lang}
+  fill(armEl.lB,lang==='ca'?u.bic.toLowerCase():u.bic,u[c?'con':'rel'],c);fill(armEl.lT,lang==='ca'?u.tri.toLowerCase():u.tri,u[c?'rel':'con'],!c);fill(armEl.lE,u.elbow);armState=c+lang}
 function drawArm(t){
   const S={x:210,y:250},E={x:480,y:300};
   const ang=(-105+(113)*t)*Math.PI/180,Lf=240;
@@ -487,7 +490,7 @@ function detect(){
     if(p&&!pinching){pinching=true;grab(ema.px,ema.py)}else if(p&&pinching)move(ema.px,ema.py);else if(!p&&pinching){pinching=false;release()}
     cursor.setAttribute('fill',pinching?'rgba(192,86,59,.35)':'none');hud.push(u.R+' '+(pinching?u.pinch:u.point));
   }else{cursor.setAttribute('opacity',0);if(pinching){pinching=false;release()}ema.px=null;if(!L.custom)hud.push(u.R+' '+u.none)}
-  document.getElementById('hud').textContent=(hands.length?'✋'+hands.length+' · '+hud.join(' · '):'🔍 '+HINT[lang])+' · '+cam.dev+' · v6';
+  document.getElementById('hud').textContent=(hands.length?'✋'+hands.length+' · '+hud.join(' · '):'🔍 '+HINT[lang])+' · '+cam.dev+' · v8';
 }
 
 if(MOB)document.querySelector('main').appendChild(document.querySelector('.vid'));
