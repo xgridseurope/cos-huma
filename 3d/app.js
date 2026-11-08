@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-const VERSION = 'M1.1-0.3';
+const VERSION = 'M1.1-0.4';
 const $ = (id) => document.getElementById(id);
 const t0 = performance.now();
 const Q = new URLSearchParams(location.search), H = location.hash;
@@ -13,10 +13,10 @@ const fail = (stage, err) => window.__coshumaFail(stage, err); // defined in ind
 
 // ---------- UI text ----------
 const T = {
-  ca: { title: 'El cos humà 3D', sub: 'Esquelet · versió de prova M1', join: 'Munta', split: 'Desmunta', front: 'Davant', back: 'Darrere', labels: 'Noms', zones: 'Zones', hint: 'Toca un os · arrossega per girar · pessiga per ampliar', loading: "Carregant l'esquelet…", extra: 'No surt al llibre', pair: '(×2)' },
-  es: { title: 'El cuerpo humano 3D', sub: 'Esqueleto · versión de prueba M1', join: 'Unir', split: 'Separar', front: 'Delante', back: 'Detrás', labels: 'Nombres', zones: 'Zonas', hint: 'Toca un hueso · arrastra para girar · pellizca para ampliar', loading: 'Cargando el esqueleto…', extra: 'No sale en el libro', pair: '(×2)' },
-  zh: { title: '人体 3D', sub: '骨骼 · M1 测试版', join: '拼合', split: '拆开', front: '正面', back: '背面', labels: '名称', zones: '分区', hint: '点骨头看名字 · 拖动旋转 · 双指缩放', loading: '正在加载骨骼…', extra: '课本里没有', pair: '（左右各一）' },
-  en: { title: 'The human body 3D', sub: 'Skeleton · M1 test build', join: 'Join', split: 'Split', front: 'Front', back: 'Back', labels: 'Names', zones: 'Zones', hint: 'Tap a bone · drag to turn · pinch to zoom', loading: 'Loading the skeleton…', extra: 'Not in the textbook', pair: '(×2)' },
+  ca: { title: 'El cos humà 3D', sub: 'Esquelet · prova M1.1 (v0.4)', join: 'Munta', split: 'Desmunta', front: 'Davant', back: 'Darrere', labels: 'Noms', zones: 'Zones', hint: 'Toca un os · arrossega per girar · pessiga per ampliar', loading: "Carregant l'esquelet…", extra: 'No surt al llibre', pair: '(×2)' },
+  es: { title: 'El cuerpo humano 3D', sub: 'Esqueleto · prueba M1.1 (v0.4)', join: 'Unir', split: 'Separar', front: 'Delante', back: 'Detrás', labels: 'Nombres', zones: 'Zonas', hint: 'Toca un hueso · arrastra para girar · pellizca para ampliar', loading: 'Cargando el esqueleto…', extra: 'No sale en el libro', pair: '(×2)' },
+  zh: { title: '人体 3D', sub: '骨骼 · M1.1 测试版 (v0.4)', join: '拼合', split: '拆开', front: '正面', back: '背面', labels: '名称', zones: '分区', hint: '点骨头看名字 · 拖动旋转 · 双指缩放', loading: '正在加载骨骼…', extra: '课本里没有', pair: '（左右各一）' },
+  en: { title: 'The human body 3D', sub: 'Skeleton · M1.1 test (v0.4)', join: 'Join', split: 'Split', front: 'Front', back: 'Back', labels: 'Names', zones: 'Zones', hint: 'Tap a bone · drag to turn · pinch to zoom', loading: 'Loading the skeleton…', extra: 'Not in the textbook', pair: '(×2)' },
 };
 let lang = 'ca';
 try { lang = localStorage.getItem('coshuma.lang') || 'ca'; } catch {}

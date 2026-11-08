@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>El cos humà · Bloom</title>
+<title>El cos humà · Bloom (prova M1.1)</title>
 <style>
 :root{--bg:#f4efe6;--ink:#2b2622;--mut:#8a8076;--line:#e2d8c8;--acc:#c0563b}
 *{box-sizing:border-box}
@@ -178,8 +178,8 @@ function lessonSkeleton(){
   for(const s of['L','R']){
     const k=s==='L'?-1:1,X=x=>s==='L'?x:400-x,arm='braç'+s,leg='cama'+s,la=s==='R',ll=s==='L';
     add({key:'humer',zone:'ext',reg:arm,side:s,lab:la,pos:'right',type:'llarg',off:[k*160,-10],svg:bone(X(138),174,X(124),318,11)});
-    add({key:'cubit',zone:'ext',reg:arm,side:s,lab:la,pos:'right',off:[k*185,40],svg:bone(X(133),330,X(123),452,6)});
-    add({key:'radi',zone:'ext',reg:arm,side:s,lab:la,pos:'right',off:[k*222,40],svg:bone(X(120),328,X(102),450,6)});
+    add({key:'cubit',zone:'ext',reg:arm,side:s,lab:la,pos:'right',anc:[X(130),370],off:[k*185,40],svg:bone(X(133),330,X(123),452,6)});
+    add({key:'radi',zone:'ext',reg:arm,side:s,lab:la,pos:'right',anc:[X(106),420],off:[k*222,40],svg:bone(X(120),328,X(102),450,6)});
     add({key:'carp',zone:'ext',reg:arm,side:s,lab:la,pos:'right',off:[k*250,75],svg:`<ellipse cx="${X(111)}" cy="464" rx="14" ry="9" class="f"/><circle cx="${X(105)}" cy="463" r="3" class="h" opacity=".25"/><circle cx="${X(113)}" cy="465" r="3" class="h" opacity=".25"/>`});
     let mc='',fm='';
     [[98,96,93],[104,103,101],[110,110,109],[116,117,117]].forEach(([a,b,c],i)=>{mc+=bone(X(a),474,X(b),494,3);fm+=bone(X(b),500,X(c),[518,524,522,514][i],2.6)});
