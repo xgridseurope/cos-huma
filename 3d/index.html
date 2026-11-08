@@ -54,7 +54,7 @@ header select,header a,.btn{pointer-events:auto;font:inherit;font-size:14px;bord
 #rotHint{display:none;position:fixed;top:52px;left:50%;transform:translateX(-50%);font-size:12px;background:#fffaf2;border:1px solid var(--line);border-radius:10px;padding:3px 10px;pointer-events:none;white-space:nowrap}
 body.short #rotHint{display:block}body.short #dock .row:last-child{display:none}body.short header h1 small{display:none}
 @media (min-width:700px){.pill{font-size:15px;padding:5px 12px;line-height:20px}}
-@media (min-width:900px){#dock{left:auto;right:12px;bottom:12px;width:420px;background:#f4efe6ee;border-radius:16px;padding:10px;box-shadow:0 4px 18px #0002}}
+@media (min-width:900px){#dock{left:50%;right:auto;transform:translateX(-50%);bottom:10px;width:min(640px,calc(var(--pageW,100vw) - 24px));background:#f4efe6ee;border-radius:16px;padding:10px;box-shadow:0 4px 18px #0002}}
 </style>
 <script type="importmap">{"imports":{"three":"./vendor/three.module.js","three/addons/":"./vendor/jsm/"}}</script>
 </head>

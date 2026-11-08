@@ -209,7 +209,7 @@ function layoutLabels() {
     if (over > 0) { for (let i = list.length - 1, lim = bottom; i >= 0; i--) { list[i].y = Math.min(list[i].y, lim - h); lim = list[i].y - gap; } }
     for (const l of list) {
       const el = pills[l.k]; const w = el.offsetWidth;
-      const x = side === 'L' ? pad : W - pad - w;
+      const F = pageFrame(); const x = side === 'L' ? F.x0 + pad : F.x0 + F.w - pad - w;
       el.style.transform = `translate(${x}px,${l.y}px)`;
       el.classList.toggle('sel', S.sel === l.k);
       const ex = side === 'L' ? x + w : x, ey = l.y + h / 2;
@@ -221,12 +221,15 @@ function layoutLabels() {
   leadsEl.innerHTML = svg; lastLabelRects = rects;
 }
 // layout height of the dock without the info card, so opening the card never moves the body
-function dockH() { if (innerWidth >= 900) return 0; const c = $('card'); return $('dock').offsetHeight - (c.classList.contains('show') ? c.offsetHeight + 8 : 0); }
+// "Page" frame: on wide screens the figure and its labels are laid out inside a textbook-like page
+// (width ≈ 0.8 × height) centred on the screen, instead of being stretched to the screen edges.
+function pageFrame() { const W = innerWidth, H = innerHeight; const w = Math.min(W, Math.max(360, Math.round(H * 0.8))); return { x0: Math.round((W - w) / 2), w }; }
+function dockH() { const c = $('card'); return $('dock').offsetHeight + (innerWidth >= 900 ? 12 : 0) - (c.classList.contains('show') ? c.offsetHeight + 8 : 0); }
 
 // ---------- camera fit (uniform: camera.aspect always equals canvas aspect) ----------
-const colW = () => (S.labels && innerHeight >= 500 && innerWidth < 900 ? Math.min(150, Math.max(96, innerWidth * 0.27)) : 0);
+const colW = () => (S.labels && innerHeight >= 500 ? Math.min(170, Math.max(96, pageFrame().w * 0.24)) : 0);
 function fitDistance(box) {
-  const W = innerWidth, H = innerHeight, availH = H - 58 - dockH() - 10, availW = W - 2 * colW() * 0.55 - 12;
+  const W = innerWidth, H = innerHeight, availH = H - 58 - dockH() - 10, availW = pageFrame().w - 2 * colW() * 0.55 - 12;
   const size = box.getSize(new THREE.Vector3());
   const tan = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
   const dH = (size.y / 2) / tan * (H / availH);
@@ -251,6 +254,7 @@ function placeCamera(az, dist) {
 }
 function resize() {
   const W = innerWidth, H = innerHeight;
+  document.documentElement.style.setProperty('--pageW', pageFrame().w + 'px');
   renderer.setSize(W, H, false); camera.aspect = W / H; camera.updateProjectionMatrix();
   refit(true); invalidate();
 }
