@@ -323,7 +323,7 @@ function render(){
   else if(mode==='zona')cs.textContent=u.dragZone;else if(mode==='tipus')cs.textContent=u.dragType;
   else cs.textContent=curT<.2?u.s0+' · '+u.fact[L.id]:curT<.62?u.s1:u.s2;
   if(!cam.on)document.getElementById('hud').textContent=Math.round(curT*100)+'%';
-  if(cam.on&&cam.lm){const n=performance.now();if(n-lastDet>45){lastDet=n;try{detect()}catch(e){detErr(e)}}}else if(cam.on)document.getElementById('hud').textContent=(cam.status||'…')+' · v5';
+  if(cam.on&&cam.lm){const n=performance.now();if(n-lastDet>45){lastDet=n;try{detect()}catch(e){detErr(e)}}}else if(cam.on)document.getElementById('hud').textContent=(cam.status||'…')+' · v6';
   requestAnimationFrame(render);
 }
 
@@ -435,9 +435,9 @@ document.getElementById('camBtn').onclick=async()=>{
   cam.status=u.loading;
   try{const V='https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14';const vision=await import(V+'/vision_bundle.mjs');cam.vision=vision;
     const fs=await vision.FilesetResolver.forVisionTasks(V+'/wasm');
-    const opt=d=>({baseOptions:{modelAssetPath:'https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task',delegate:d},runningMode:'VIDEO',numHands:2});
+    const opt=d=>({baseOptions:{modelAssetPath:'https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task',delegate:d},runningMode:'VIDEO',numHands:2,minHandDetectionConfidence:.35,minHandPresenceConfidence:.35,minTrackingConfidence:.35});
     cam.fs=fs;cam.opt=opt;const ios=/iPhone|iPad|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
-    cam.dev=ios?'CPU':'GPU';
+    cam.dev=(ios||MOB||/Android/i.test(navigator.userAgent))?'CPU':'GPU';
     try{cam.lm=await vision.HandLandmarker.createFromOptions(fs,opt(cam.dev))}catch(e){cam.dev='CPU';cam.lm=await vision.HandLandmarker.createFromOptions(fs,opt('CPU'))}
     msg.textContent=T[lang].ready;document.getElementById('dot').classList.add('on');
   }catch(e){const t='⚠ '+(e&&e.message||e);msg.textContent=t;cam.status=t}
@@ -487,7 +487,7 @@ function detect(){
     if(p&&!pinching){pinching=true;grab(ema.px,ema.py)}else if(p&&pinching)move(ema.px,ema.py);else if(!p&&pinching){pinching=false;release()}
     cursor.setAttribute('fill',pinching?'rgba(192,86,59,.35)':'none');hud.push(u.R+' '+(pinching?u.pinch:u.point));
   }else{cursor.setAttribute('opacity',0);if(pinching){pinching=false;release()}ema.px=null;if(!L.custom)hud.push(u.R+' '+u.none)}
-  document.getElementById('hud').textContent=(hands.length?'✋'+hands.length+' · '+hud.join(' · '):'🔍 '+HINT[lang])+' · '+cam.dev+' · v5';
+  document.getElementById('hud').textContent=(hands.length?'✋'+hands.length+' · '+hud.join(' · '):'🔍 '+HINT[lang])+' · '+cam.dev+' · v6';
 }
 
 if(MOB)document.querySelector('main').appendChild(document.querySelector('.vid'));
