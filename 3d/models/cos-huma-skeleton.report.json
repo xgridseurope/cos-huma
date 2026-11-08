@@ -21,8 +21,8 @@
    "tris": 2090
   },
   "columna_C": {
-   "parts": 48,
-   "tris": 46414
+   "parts": 47,
+   "tris": 44964
   },
   "costella_L": {
    "parts": 20,
@@ -155,13 +155,17 @@
   "tibia_R": {
    "parts": 1,
    "tris": 4332
+  },
+  "vertebra_C": {
+   "parts": 1,
+   "tris": 1450
   }
  },
  "unmapped": [
   "hyoid-bone"
  ],
  "shellTris": 36166,
- "meshes": 40,
- "totalTris": 223120,
- "bytes": 3186048
+ "meshes": 41,
+ "totalTris": 223844,
+ "bytes": 3196940
 }

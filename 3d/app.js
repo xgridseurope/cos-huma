@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-const VERSION = 'M1.1-0.2';
+const VERSION = 'M1.1-0.3';
 const $ = (id) => document.getElementById(id);
 const t0 = performance.now();
 const Q = new URLSearchParams(location.search), H = location.hash;
@@ -23,13 +23,15 @@ try { lang = localStorage.getItem('coshuma.lang') || 'ca'; } catch {}
 
 // ---------- layout knowledge (3D only; knowledge itself comes from curriculum.json) ----------
 // preferred label column, as in the 2D textbook layout
-const LABEL_COL = { crani: 'L', maxillar: 'L', columna: 'L', costella: 'L', estern: 'L', pelvis: 'L', femur: 'L', rotula: 'L', tibia: 'L', fpeu: 'L',
+const LABEL_COL = { crani: 'L', maxillar: 'L', vertebra: 'L', columna: 'L', costella: 'L', estern: 'L', pelvis: 'L', femur: 'L', rotula: 'L', tibia: 'L', fpeu: 'L',
   omoplat: 'R', humer: 'R', cubit: 'R', radi: 'R', carp: 'R', metacarp: 'R', falma: 'R', perone: 'R', tars: 'R', metatars: 'R' };
+// label anchor shift (fraction of the item's height) so the order matches the textbook: costella above estern, vèrtebra above columna vertebral
+const ANCHOR_DY = { costella: 0.22, columna: -0.3 };
 const ARM = new Set(['humer', 'cubit', 'radi', 'carp', 'metacarp', 'falma']);
 const LEG = new Set(['femur', 'rotula', 'tibia', 'perone', 'tars', 'metatars', 'fpeu']);
 // stage 2 offsets (model units; body ≈ 4.1 tall; +x = body's left, +z = front); s = +1 left side, -1 right side
 const PIECE = {
-  crani: [0, .32, 0], maxillar: [0, .06, .22], columna: [0, 0, -.42], costella: [.34, 0, .04], estern: [0, -.02, .44], pelvis: [0, -.22, 0],
+  crani: [0, .32, 0], maxillar: [0, .06, .22], columna: [0, 0, -.42], vertebra: [0, -.04, .3], costella: [.34, 0, .04], estern: [0, -.02, .44], pelvis: [0, -.22, 0],
   omoplat: [.42, .1, -.26], clavicula: [.34, .3, .16], altres: [0, .18, .3],
   humer: [.04, .02, 0], cubit: [.12, -.2, 0], radi: [.28, -.2, 0], carp: [.24, -.48, 0], metacarp: [.26, -.66, 0], falma: [.28, -.86, 0],
   femur: [.04, 0, 0], rotula: [.12, -.18, .34], tibia: [.04, -.32, 0], perone: [.26, -.32, 0], tars: [.08, -.62, .1], metatars: [.08, -.82, .24], fpeu: [.08, -1.02, .38],
@@ -152,13 +154,17 @@ function applyColours() {
     if (S.zones && it?.exam) c = WHITE.clone().lerp(ZC[it.zone], 0.55);
     if (!it?.exam) c = GREY.clone();
     if (S.sel) {
-      if (p.key === S.sel) c = (it?.exam ? ZC[it.zone] : new THREE.Color(0x8a8278)).clone();
+      if (isSel(p.key)) c = (it?.exam ? ZC[it.zone] : new THREE.Color(0x8a8278)).clone();
       else c.lerp(new THREE.Color(0xf4efe6), 0.35);
     }
     m.color.copy(c);
-    m.emissive?.set(p.key === S.sel ? 0x222222 : 0x000000);
+    m.emissive?.set(isSel(p.key) ? 0x222222 : 0x000000);
   }
 }
+// Selection works on textbook terms: both 'falanges' (hand and foot) light up together,
+// and choosing 'columna vertebral' also lights the separate 'vèrtebra'.
+const termOf = (k) => (k && CUR[k] ? CUR[k].term : null);
+function isSel(k) { const t = termOf(S.sel); if (!t) return false; return termOf(k) === t || (t === 'columna' && CUR[k]?.partOf === 'columna'); }
 function select(k) {
   S.sel = k; applyColours(); renderCard(); invalidate();
 }
@@ -170,7 +176,7 @@ for (const it of cur.items) {
   if (!it.exam || it.lesson !== 'esquelet') continue;
   const d = document.createElement('div'); d.className = 'pill'; d.dataset.key = it.key;
   d.style.background = `var(--${it.zone}-f)`; d.style.borderColor = `var(--${it.zone}-s)`;
-  d.addEventListener('click', (ev) => { ev.stopPropagation(); select(S.sel === it.key ? null : it.key); });
+  d.addEventListener('click', (ev) => { ev.stopPropagation(); select(termOf(S.sel) === it.term ? null : it.key); });
   pillsEl.appendChild(d); pills[it.key] = d;
 }
 function labelText() { for (const k in pills) pills[k].textContent = CUR[k].name[lang]; }
@@ -189,7 +195,7 @@ function layoutLabels() {
     let best = null;
     for (const p of parts) {
       if (p.key !== k) continue;
-      box3.setFromObject(p.mesh); box3.getCenter(v3); v3.project(camera);
+      box3.setFromObject(p.mesh); box3.getCenter(v3); if (ANCHOR_DY[k]) v3.y += ANCHOR_DY[k] * (box3.max.y - box3.min.y); v3.project(camera);
       const x = (v3.x + 1) / 2 * W, y = (1 - v3.y) / 2 * H;
       const score = want === 'L' ? x : -x;
       if (!best || score < best.score) best = { x, y, score };
@@ -211,7 +217,7 @@ function layoutLabels() {
       const el = pills[l.k]; const w = el.offsetWidth;
       const F = pageFrame(); const x = side === 'L' ? F.x0 + pad : F.x0 + F.w - pad - w;
       el.style.transform = `translate(${x}px,${l.y}px)`;
-      el.classList.toggle('sel', S.sel === l.k);
+      el.classList.toggle('sel', isSel(l.k));
       const ex = side === 'L' ? x + w : x, ey = l.y + h / 2;
       svg += `<line x1="${ex}" y1="${ey}" x2="${l.ax}" y2="${l.ay}"/><circle cx="${l.ax}" cy="${l.ay}" r="2.6"/>`;
       rects.push({ k: l.k, x, y: l.y, w, h });
@@ -270,7 +276,7 @@ renderer.domElement.addEventListener('pointerup', (e) => {
   if (!s || wasMulti) return;
   if (Math.hypot(e.clientX - s.x, e.clientY - s.y) > 8 || performance.now() - s.t > 600) return;
   const k = fingerPick(e.clientX, e.clientY);
-  select(k && k !== S.sel ? k : null);
+  select(k && termOf(k) !== termOf(S.sel) ? k : null);
 });
 renderer.domElement.addEventListener('pointercancel', (e) => { taps.delete(e.pointerId); });
 
@@ -289,11 +295,13 @@ function fingerPick(x, y) {
 function renderCard() {
   const c = $('card'); const it = S.sel && CUR[S.sel];
   if (!it) { c.classList.remove('show'); return; }
-  const u = T[lang]; const paired = parts.filter((p) => p.key === S.sel).length > 1;
+  const u = T[lang]; const paired = parts.filter((p) => p.key === S.sel).length > 1 && it.term !== 'falanges';
   const zone = it.zone ? `<span class="zone" style="background:var(--${it.zone}-f);border-color:var(--${it.zone}-s)">${cur.zones[it.zone][lang]}</span>` : '';
   $('cName').innerHTML = `${it.name[lang]} <small style="font-size:13px;color:var(--mut)">${paired ? u.pair : ''}</small> ${zone} ${it.exam ? '' : `<span class="extra">${u.extra}</span>`}`;
   $('cCa').textContent = lang !== 'ca' ? it.name.ca : '';
-  $('cDef').textContent = it.def[lang] || '';
+  const zf = it.zone && cur.zoneFacts[`${it.lesson}.${it.zone}`];
+  const typ = it.type && it.status.type === 'textbook' ? ` (${cur.types[it.type][lang]})` : '';
+  $('cDef').textContent = it.exam ? '📖 ' + ((it.fact && it.fact[lang]) || (zf && zf[lang]) || '') + typ : '';
   c.classList.add('show'); invalidate(); // no refit: the body must not jump under the child's finger when the card opens
 }
 $('cardX').onclick = () => select(null);
@@ -413,7 +421,7 @@ window.__coshuma = {
   project(k) { const p = parts.find((q) => q.key === k && (q.side !== 'R')) || parts.find((q) => q.key === k); box3.setFromObject(p.mesh); box3.getCenter(v3); v3.project(camera); return [(v3.x + 1) / 2 * innerWidth, (1 - v3.y) / 2 * innerHeight]; },
   bodyRect() { const b = currentBox(); const pts = []; for (const x of [b.min.x, b.max.x]) for (const y of [b.min.y, b.max.y]) for (const z of [b.min.z, b.max.z]) { v3.set(x, y, z).project(camera); pts.push([(v3.x + 1) / 2 * innerWidth, (1 - v3.y) / 2 * innerHeight]); } return { x0: Math.min(...pts.map((p) => p[0])), x1: Math.max(...pts.map((p) => p[0])), y0: Math.min(...pts.map((p) => p[1])), y1: Math.max(...pts.map((p) => p[1])) }; },
   idle: () => !frameReq && !bench.on, diag: diagData, startBench,
-  eligible: (it, field) => it.exam === true && ['confirmed', 'transcribed'].includes(it.status?.[field]),
+  eligible: (it, field) => it.exam === true && it.status?.[field] === 'textbook', termOf, isSel,
   pickAt: (x, y) => rayKey(x, y), fingerPick,
   samplePoints(k, n = 6) { // screen points whose first hit is this item (what a child would aim at)
     const out = []; const ps = parts.filter((p) => p.key === k);
